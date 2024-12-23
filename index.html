@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory Game</title>
+    <title>Card Matching</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -26,7 +26,7 @@
 
 <body class="bg-[url(images/garden.jpg)] bg-cover flex flex-col justify-center items-center w-full ">
 
-    <p class="text-4xl text-white my-2">Fruitful Memories: A Harvest Hunt</p>
+    <p class="text-2xl my-12 sm:text-4xl text-white sm:my-2">Fruitful Memories: A Harvest Hunt</p>
     <button id="harvestAgain"
         class="bg-[url(images/garden.jpg)] bg-cover border-2 border-white bg-transparent px-4 py-2 mt-2 text-lg rounded-lg text-white ">Harvest
         Again</button>
@@ -35,7 +35,7 @@
         <p id="fruitBasket" class="text-white text-xl">Fruit Basket - 0</p>
     </div>
 
-    <div id="fruitBoard" class="max-w-xl max-h-xl px-6 flex flex-row flex-wrap items-center mx-auto bg-transparent ">
+    <div id="fruitBoard" class="max-w-sm max-w-sm mt-16 sm:mt-2 border-6 border-white sm:max-w-xl sm:max-h-xl grid grid-cols-4 bg-transparent ">
     </div>
 
     <script>
@@ -61,7 +61,7 @@
             shuffle(fruits);
             for (var val of fruits) {
                 var fruitCard = document.createElement('div');
-                fruitCard.className = "w-28 h-28 bg-white border border-white m-2 ";
+                fruitCard.className = "w-16 h-16 sm:w-28 sm:h-28 bg-white border border-white m-2 ";
                 fruitCard.dataset.value = val;
                 var fruitImage = document.createElement('img');
                 fruitImage.className = "transform scale-100 hidden ";
@@ -79,7 +79,7 @@
             if (fruitCard.classList.contains('flipped') || (flippedCards.length == 2)) {
                 return null;
             }
-            fruitCard.classList.add('flipped')
+            fruitCard.classList.add('flipped');
             fruitImage.classList.remove('hidden');
             flippedCards.push(fruitCard);
             if (flippedCards.length === 2) {
