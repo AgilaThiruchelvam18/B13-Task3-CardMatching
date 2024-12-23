@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Righteous&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rowdies:wght@300;400;700&family=Saira:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        poppins: ["Poppins", "serif"]
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-[url(images/garden.jpg)] bg-cover flex flex-col justify-center items-center w-full ">
+
+    <p class="text-4xl text-white my-2">Fruitful Memories: A Harvest Hunt</p>
+    <button id="harvestAgain"
+        class="bg-[url(images/garden.jpg)] bg-cover border-2 border-white bg-transparent px-4 py-2 mt-2 text-lg rounded-lg text-white ">Harvest
+        Again</button>
+    <div class="flex flex-row space-x-16 my-4 ">
+        <p id="harvest" class="text-white text-xl">Harvests Left - 10</p>
+        <p id="fruitBasket" class="text-white text-xl">Fruit Basket - 0</p>
+    </div>
+
+    <div id="fruitBoard" class="max-w-xl max-h-xl px-6 flex flex-row flex-wrap items-center mx-auto bg-transparent ">
+    </div>
+
+    <script>
+        const fruits = ['apple', 'orange', 'kiwi', 'dragon', 'banana', 'strawberry', 'watermelon', 'grapes', 'apple',
+            'orange', 'kiwi', 'dragon', 'banana', 'strawberry', 'watermelon', 'grapes'
+        ];
+
+        var fruitBoard = document.getElementById('fruitBoard');
+        let flippedCards = [];
+        var fruitsCount = 0;
+        var harvestLeft = 10;
+
+        function shuffle(fruits) {
+            for (let i = fruits.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                [fruits[i], fruits[j]] = [fruits[j], fruits[i]];
+
+            }
+        }
+
+        function createFruitBoard() {
+            fruitBoard.innerHTML = ' ';
+            shuffle(fruits);
+            for (var val of fruits) {
+                var fruitCard = document.createElement('div');
+                fruitCard.className = "w-28 h-28 bg-white border border-white m-2 ";
+                fruitCard.dataset.value = val;
+                var fruitImage = document.createElement('img');
+                fruitImage.className = "transform scale-100 hidden ";
+                fruitImage.src = `images/${val}.jpg`;
+                fruitCard.appendChild(fruitImage);
+                fruitBoard.appendChild(fruitCard);
+                fruitCard.addEventListener('click', onCardClick);
+            };
+        }
+
+        function onCardClick(event) {
+
+            var fruitCard = event.currentTarget;
+            var fruitImage = fruitCard.querySelector('img')
+            if (fruitCard.classList.contains('flipped') || (flippedCards.length == 2)) {
+                return null;
+            }
+            fruitCard.classList.add('flipped')
+            fruitImage.classList.remove('hidden');
+            flippedCards.push(fruitCard);
+            if (flippedCards.length === 2) {
+                checkForMatch();
+            }
+        }
+
+        function checkForMatch() {
+            var [fruitCard1, fruitCard2] = flippedCards;
+            var fruitImage1 = fruitCard1.querySelector('img');
+            var fruitImage2 = fruitCard2.querySelector('img');
+            if (fruitCard1.dataset.value === fruitCard2.dataset.value) {
+                flippedCards = [];
+                fruitsCount++;
+                fruitsBasket(fruitsCount);
+
+            } else {
+                harvestLeft--;
+                findHarvestLeft(harvestLeft);
+                setTimeout(() => {
+                    fruitCard1.classList.remove('flipped');
+                    fruitImage1.classList.add('hidden');
+                    fruitCard2.classList.remove('flipped')
+                    fruitImage2.classList.add('hidden');
+                    flippedCards = [];
+                }, 500);
+
+
+            }
+        }
+
+        function fruitsBasket(fruitsCount) {
+            var fruitBasket = document.getElementById('fruitBasket');
+            fruitBasket.innerHTML = `Fruit Basket - ${fruitsCount}`;
+            setTimeout(() => {
+                if (fruitsCount == 8) {
+                    alert(`you have won! Harvest left- ${harvestLeft}`);
+                }
+            }, 200);
+        }
+
+        function findHarvestLeft(harvestLeft) {
+            var harvest = document.getElementById('harvest');
+            harvest.innerHTML = `Harvests Left - ${harvestLeft}`;
+            setTimeout(() => {
+                if (harvestLeft == 0) {
+                    alert("you have lost!");
+                }
+            }, 200);
+
+
+        }
+
+        function restartFunction() {
+            flippedCards = [];
+            fruitsCount = 0;
+            harvestLeft = 10;
+            createFruitBoard();
+            fruitsBasket(fruitsCount);
+            findHarvestLeft(harvestLeft);
+
+        }
+
+        var restart = document.getElementById('harvestAgain');
+        restart.addEventListener('click', restartFunction);
+
+        createFruitBoard();
+        // document.body.appendChild(fruitBoard);
+    </script>
+</body>
+
+</html>
