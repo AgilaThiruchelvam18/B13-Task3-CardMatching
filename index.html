@@ -56,18 +56,23 @@
             shuffle(fruits);
             for (var val of fruits) {                
                 var fruitCard = document.createElement('div');
-                fruitCard.className = "w-16 h-16 sm:w-28 sm:h-28 bg-white border border-white m-2 [transform-style:preserve-3d] transition-transform duration-500";
+                fruitCard.className = "relative w-16 h-16 sm:w-28 sm:h-28 border border-white m-2 [transform-style:preserve-3d] transition-transform duration-500";
                 fruitCard.dataset.value = val;
                 var front = document.createElement('div');
-                front.className = " w-full h-full flex items-center justify-center [backface-visibility:hidden] [transform:rotateY(180deg)]";
+                front.className = " absolute w-full h-full flex items-center justify-center [backface-visibility:hidden] [transform:rotateY(180deg)]";
                 var fruitImage = document.createElement('img');
                 fruitImage.className = "w-full h-full scale-100 ";
                 fruitImage.src = `images/${val}.jpg`;
+                console.log(fruitImage.src);
                 front.appendChild(fruitImage);
-                // var back = document.createElement('div');
-                // back.className = "absolute w-full h-full bg-gray-200 [backface-visibility:hidden] ";
+                var back = document.createElement('div');
+                back.className = " w-full h-full flex items-center justify-center  [backface-visibility:hidden] ";
+                var fruitTextImage = document.createElement('img');
+                fruitTextImage.className = "w-full h-full scale-100 ";
+                fruitTextImage.src = `images/fruit.jpg`;
+                back.appendChild(fruitTextImage);
                 fruitCard.appendChild(front);
-                // fruitCard.appendChild(back);
+               fruitCard.appendChild(back);
                 fruitBoard.appendChild(fruitCard);
                 fruitCard.addEventListener('click', onCardClick);
             }
