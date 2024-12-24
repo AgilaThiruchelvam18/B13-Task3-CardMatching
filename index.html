@@ -11,6 +11,7 @@
     <script>
         tailwind.config = {
             theme: {
+               
                 extend: {
                     fontFamily: {
                         poppins: ["Poppins", "serif"]
@@ -58,21 +59,28 @@
                 var fruitCard = document.createElement('div');
                 fruitCard.className = "relative w-16 h-16 sm:w-28 sm:h-28 border border-white m-2 [transform-style:preserve-3d] transition-transform duration-500";
                 fruitCard.dataset.value = val;
+               
+
                 var front = document.createElement('div');
-                front.className = " absolute w-full h-full flex items-center justify-center [backface-visibility:hidden] [transform:rotateY(180deg)]";
+                front.className = "absolute w-full h-full flex items-center justify-center [backface-visibility:hidden] ";//[backface-visibility:hidden] -backside of card is not visible
+                var fruitTextImage = document.createElement('img');
+                fruitTextImage.className = "w-full h-full scale-100 ";
+                fruitTextImage.src = `images/fruit.jpg`;
+                front.appendChild(fruitTextImage);
+                
+                
+                
+                var back = document.createElement('div');
+                back.className = " absolute w-full h-full flex items-center justify-center  [transform:rotateY(180deg)] [backface-visibility:hidden]";//[transform:rotateY(180deg)]-rotes theback of the card,so whem fruits card flip ,the backside will be visible
                 var fruitImage = document.createElement('img');
                 fruitImage.className = "w-full h-full scale-100 ";
                 fruitImage.src = `images/${val}.jpg`;
                 console.log(fruitImage.src);
-                front.appendChild(fruitImage);
-                var back = document.createElement('div');
-                back.className = " w-full h-full flex items-center justify-center  [backface-visibility:hidden] ";
-                var fruitTextImage = document.createElement('img');
-                fruitTextImage.className = "w-full h-full scale-100 ";
-                fruitTextImage.src = `images/fruit.jpg`;
-                back.appendChild(fruitTextImage);
+                back.appendChild(fruitImage);
+                
+      
                 fruitCard.appendChild(front);
-               fruitCard.appendChild(back);
+                fruitCard.appendChild(back);
                 fruitBoard.appendChild(fruitCard);
                 fruitCard.addEventListener('click', onCardClick);
             }
@@ -80,13 +88,12 @@
 
         function onCardClick(event) {
             var fruitCard = event.currentTarget;
-            var fruitImage = fruitCard.querySelector('.front img');
+            var fruitImage = fruitCard.querySelector('.back img');
             if (fruitCard.style.transform === 'rotateY(180deg)' || flippedCards.length === 2) {
                 return null;
             }
-            fruitCard.style.transform = 'rotateY(180deg)';
-            // fruitImage.classList.remove('hidden');
-            // fruitCard.classList
+            fruitCard.style.transform = 'rotateY(180deg)';// style apllied for fruit card and not image
+           
             flippedCards.push(fruitCard);
             if (flippedCards.length === 2) {
                 checkForMatch();
@@ -106,9 +113,9 @@
                 findHarvestLeft(harvestLeft);
                 setTimeout(() => {
                     fruitCard1.style.transform = '';
-                    // fruitImage1.classList.add('hidden');
+                  
                     fruitCard2.style.transform = '';
-                    // fruitImage2.classList.add('hidden');
+                  
                     flippedCards = [];
                 }, 500);
             }
@@ -120,6 +127,7 @@
             setTimeout(() => {
                 if (fruitsCount == 8) {
                     alert(`You have won! Harvest left - ${harvestLeft}`);
+                    restartFunction();
                 }
             }, 200);
         }
